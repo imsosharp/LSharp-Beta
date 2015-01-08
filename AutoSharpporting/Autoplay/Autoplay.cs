@@ -146,7 +146,7 @@ namespace Support
                                 Bot.IssueOrder(GameObjectOrder.AttackUnit, turret);
                         }
                     }
-                    else
+                    if (!Bot.UnderTurret(true))
                     {
                         foreach (var hero in MetaHandler.EnemyHeroes)
                         {
