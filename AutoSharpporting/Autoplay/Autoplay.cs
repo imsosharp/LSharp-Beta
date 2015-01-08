@@ -43,7 +43,7 @@ namespace Support
         private static float _lowManaRatio = 0.1f;
         private static float _lowHealthIfLowManaRatio = 0.6f;
         private static bool _byPassFountainCheck = false;
-        private static int _neededGoldToBack = Rand.Next(0,1100);
+        private static int _neededGoldToBack = 2200 + Rand.Next(0,1100);
 
         public Autoplay()
         {
