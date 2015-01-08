@@ -137,7 +137,25 @@ namespace Support
             {
                 try
                 {
-                    if (Bot.UnderTurret(true))
+                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Bot, 400) < 2)
+                    {
+                        foreach (var turret in MetaHandler.EnemyTurrets)
+                        {
+                            if (turret.Distance(Bot) < Bot.AttackRange)
+                                Bot.IssueOrder(GameObjectOrder.AttackUnit, turret);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var hero in MetaHandler.EnemyHeroes)
+                        {
+                            if (hero.Distance(Bot) < Bot.AttackRange)
+                            {
+                                Bot.IssueOrder(GameObjectOrder.AttackUnit, hero);
+                            }
+                        }
+                    }
+                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Bot, 400) < 2)
                     {
                         _safepos.X = (Bot.Position.X + _safe);
                         _safepos.Y = (Bot.Position.Y + _safe);
@@ -202,7 +220,7 @@ namespace Support
                                 Console.WriteLine("Carry dead or afk, following: " + _tempcarry.ChampionName);
                                 _frontline.X = _tempcarry.Position.X + _chosen;
                                 _frontline.Y = _tempcarry.Position.Y + _chosen;
-                                if (!(_tempcarry.UnderTurret(true)) && IsBotSafe())
+                                if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                                 {
                                     if (_tempcarry.Distance(Bot) > 450)
                                     {
@@ -215,12 +233,12 @@ namespace Support
                     }
                     #endregion Carry is dead
                     #region Following
-                    if (Carry != null && !Carry.IsDead && !Carry.InFountain() && IsBotSafe() && !(Carry.UnderTurret(true)))
+                    if (Carry != null && !Carry.IsDead && !Carry.InFountain() && IsBotSafe() && !(Carry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Carry, 400) < 2))
                     {
                         Console.WriteLine("All good, following: " + Carry.ChampionName);
                         _frontline.X = Carry.Position.X + _chosen;
                         _frontline.Y = Carry.Position.Y + _chosen;
-                        if (!Carry.UnderTurret() && Carry.Distance(Bot) > 450)
+                        if (Carry.Distance(Bot) > 450)
                         {
                             Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                         }
@@ -259,7 +277,7 @@ namespace Support
                             Console.WriteLine("Carry not found, following: " + _tempcarry.ChampionName);
                             _frontline.X = _tempcarry.Position.X + _chosen;
                             _frontline.Y = _tempcarry.Position.Y + _chosen;
-                            if (!(_tempcarry.UnderTurret(true)) && IsBotSafe())
+                            if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                             {
                                 if (Bot.Distance(_frontline) > 450)
                                 {

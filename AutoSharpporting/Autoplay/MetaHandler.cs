@@ -75,12 +75,12 @@ namespace Support
                 {
                     if (Autoplay.Bot.InFountain() && (Autoplay.Bot.Gold == 475 || Autoplay.Bot.Gold == 515)) //validates on SR untill 1:55 game time
                     {
-                        int startingItem = Autoplay.Rand.Next(0, 1);
-                        if (startingItem == 0)
+                        int startingItem = Autoplay.Rand.Next(-6, 7);
+                        if (startingItem <= 0)
                         {
                             Autoplay.Bot.BuyItem(ItemId.Spellthiefs_Edge);
                         }
-                        if (startingItem == 1)
+                        if (startingItem > 0)
                         {
                             Autoplay.Bot.BuyItem(ItemId.Ancient_Coin);
                         }
@@ -188,6 +188,12 @@ namespace Support
                 }
             }
             return false;
+        }
+
+        public static int NearbyAllyMinions(Obj_AI_Base x, int distance)
+        {
+            return ObjectManager.Get<Obj_AI_Minion>()
+                    .Count(minion => minion.IsAlly && !minion.IsDead && minion.Distance(x) < distance);
         }
     }
        
