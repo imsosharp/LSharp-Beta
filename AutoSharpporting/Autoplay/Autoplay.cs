@@ -43,6 +43,7 @@ namespace Support
         private static float _lowManaRatio = 0.1f;
         private static float _lowHealthIfLowManaRatio = 0.6f;
         private static bool _byPassFountainCheck = false;
+        private static int _neededGoldToBack = Rand.Next(0,1100);
 
         public Autoplay()
         {
@@ -124,9 +125,9 @@ namespace Support
             }
             if (Bot.Mana < Bot.MaxMana * _lowManaRatio)
             {
-                return Bot.Health > Bot.MaxHealth * _lowHealthIfLowManaRatio && !Bot.IsRecalling();
+                return Bot.Health > Bot.MaxHealth * _lowHealthIfLowManaRatio && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack);
             }
-            return (Bot.Health > Bot.MaxHealth * _lowHealthRatio) && !Bot.IsRecalling() && !(Bot.Gold > (2200 + Rand.Next(100, 1100)));
+            return (Bot.Health > Bot.MaxHealth * _lowHealthRatio) && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack);
 
         }
 
