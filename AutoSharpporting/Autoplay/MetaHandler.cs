@@ -42,6 +42,7 @@ namespace Support
         static readonly ItemId[] CrystalScar = { ItemId.Rod_of_Ages_Crystal_Scar, ItemId.Wooglets_Witchcap, ItemId.Void_Staff, ItemId.Athenes_Unholy_Grail, ItemId.Abyssal_Scepter, ItemId.Liandrys_Torment, ItemId.Morellonomicon, ItemId.Rylais_Crystal_Scepter, ItemId.Sorcerers_Shoes };
         static readonly ItemId[] Other = { };
         static ItemId[] CustomBuild = { };
+        static int LastShopAttempt;
 
         public static void DoChecks()
         {
@@ -103,7 +104,11 @@ namespace Support
 
         public static void BuyItem(ItemId item)
         {
-            Autoplay.Bot.BuyItem(item);
+            if (Environment.TickCount - LastShopAttempt > Autoplay.Rand.Next(0, 670))
+            {
+                Autoplay.Bot.BuyItem(item);
+                LastShopAttempt = Environment.TickCount;
+            }
         }
 
         public static ItemId[] GetDefaultItemArray()

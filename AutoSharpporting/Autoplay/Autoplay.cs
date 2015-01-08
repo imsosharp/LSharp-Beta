@@ -27,7 +27,7 @@ namespace Support
         public static Obj_AI_Hero NearestAllyHero;
         public static Obj_AI_Turret NearestAllyTurret;
         public static Obj_AI_Hero Jungler;
-        public static readonly Random Rand = new Random((42 / 13 * DateTime.Now.Millisecond) + DateTime.Now.Second);
+        public static readonly Random Rand = new Random((42 / 13 * DateTime.Now.Millisecond) + DateTime.Now.Second + Environment.TickCount);
         private static Obj_AI_Hero _tempcarry;
         private static Vector2 _lanepos;
         private static int _chosen;
