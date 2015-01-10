@@ -13,11 +13,12 @@ namespace Support
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
         private static string _theFile;
+        public static ItemId[] CustomShopList;
 
         public static void DoChecks()
         {
             _theFile = _cBuildsPath + Utility.Map.GetMap().Type + @"\" + Autoplay.Bot.BaseSkinName + ".txt";
-            Game.PrintChat(_theFile);
+            Game.PrintChat("Loaded: " + _theFile);
             if (!Directory.Exists(_cBuildsPath))
             {
                 Directory.CreateDirectory(_cBuildsPath);
@@ -36,23 +37,23 @@ namespace Support
                 int[] items = new int[itemsStringArray.Count()];*/
                 string[] itemsStringArray = File.ReadAllLines(_theFile);
                 int[] itemsIntArray = new int[itemsStringArray.Count()];
+                CustomShopList = new ItemId[itemsStringArray.Count()];
+                foreach (var i in itemsStringArray)
+                {
+                    Game.PrintChat(i);
+                }
                 for(var i = 0; i < itemsStringArray.Count(); i++)
                 {
                     //Int32.TryParse(_itemsStringArray[i], out Items[i]);
                     itemsIntArray[i] = Convert.ToInt32(itemsStringArray[i]);
                 }
-                MetaHandler.CustomBuild = GetCustomBuild(itemsIntArray);
-                foreach (var i in GetCustomBuild(itemsIntArray))
-                {
-                    Game.PrintChat(i.ToString());
-                }
                 foreach (var i in itemsIntArray)
                 {
                     Game.PrintChat(i.ToString());
                 }
-                foreach (var i in itemsStringArray)
+                for (var i = 0; i < itemsIntArray.Count(); i++)
                 {
-                    Game.PrintChat(i);
+                    CustomShopList[i] = (ItemId)itemsIntArray[i];
                 }
             }
         }
@@ -60,16 +61,6 @@ namespace Support
         public static bool ExistsCustomBuild()
         {
             return File.Exists(_theFile);
-        }
-
-        public static ItemId[] GetCustomBuild(int[] itemsArray)
-        {
-            ItemId[] localCopy = { };
-                for (var i = 0; i < itemsArray.Count(); i++)
-                {
-                    localCopy[i] = (ItemId) itemsArray[i];
-                }
-                return localCopy;
         }
     }
 }
