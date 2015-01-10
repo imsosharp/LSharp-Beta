@@ -50,19 +50,12 @@ namespace Support
 
         public static ItemId[] GetCustomBuild()
         {
-            try
-            {
-                ItemId[] localCopy = { };
+            ItemId[] localCopy = { };
                 for (var i = 0; i < Items.Count(); i++)
                 {
                     localCopy[i] = (ItemId) Items[i];
                 }
                 return localCopy;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
         }
     }
 }
