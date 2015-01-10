@@ -40,6 +40,11 @@ namespace Support
                     //Int32.TryParse(_itemsStringArray[i], out Items[i]);
                     Items[i] = Convert.ToInt32(_itemsStringArray[i]);
                 }
+                MetaHandler.CustomBuild = GetCustomBuild();
+                foreach (var i in MetaHandler.CustomBuild)
+                {
+                    Game.PrintChat(i.ToString());
+                }
             }
         }
 
