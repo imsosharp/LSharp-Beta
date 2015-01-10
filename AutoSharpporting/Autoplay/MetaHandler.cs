@@ -57,12 +57,12 @@ namespace Support
             }
             if (Autoplay.Bot.InFountain())
             {
-                if (FileHandler.ExistsCustomBuild())
+                if (map.Type == Utility.Map.MapType.HowlingAbyss && !Autoplay.Bot.IsDead)
                 {
-                    if (map.Type == Utility.Map.MapType.HowlingAbyss && !Autoplay.Bot.IsDead)
-                    {
-                        return;
-                    }
+                    return;
+                }
+                if (FileHandler.ExistsCustomBuild() && (CustomBuild[0] != null))
+                {
                     foreach (var item in CustomBuild)
                     {
                         if (!HasItem(item))
