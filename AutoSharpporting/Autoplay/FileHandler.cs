@@ -12,7 +12,7 @@ namespace Support
     internal class FileHandler
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
-        private static string _theFile; //better to intialize at ongameload
+        private static string _theFile;
         private static string[] _itemsStringArray = { };
         public static int[] Items = { };
 
@@ -49,12 +49,19 @@ namespace Support
 
         public static ItemId[] GetCustomBuild()
         {
-            ItemId[] localCopy = { };
-            for(var i = 0; i < Items.Count(); i++)
+            try
             {
-                localCopy[i] = (ItemId)Items[i];
+                ItemId[] localCopy = { };
+                for (var i = 0; i < Items.Count(); i++)
+                {
+                    localCopy[i] = (ItemId) Items[i];
+                }
+                return localCopy;
             }
-            return localCopy;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
