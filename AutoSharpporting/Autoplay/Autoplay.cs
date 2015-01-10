@@ -138,7 +138,7 @@ namespace Support
             {
                 try
                 {
-                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Bot, 400) < 2)
+                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Bot, 400) > 2)
                     {
                         foreach (var turret in MetaHandler.EnemyTurrets)
                         {
@@ -146,15 +146,11 @@ namespace Support
                                 Bot.IssueOrder(GameObjectOrder.AttackUnit, turret);
                         }
                     }
-                    if (!Bot.UnderTurret(true))
+                    else
                     {
-                        foreach (var hero in MetaHandler.EnemyHeroes)
-                        {
-                            if (hero.Distance(Bot) < Bot.AttackRange)
-                            {
-                                Bot.IssueOrder(GameObjectOrder.AttackUnit, hero);
-                            }
-                        }
+                        Obj_AI_Hero target = TargetSelector.GetTarget(
+                            Bot.AttackRange, TargetSelector.DamageType.Physical);
+                        Bot.IssueOrder(GameObjectOrder.AttackUnit, target);
                     }
                     if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(Bot, 400) < 2)
                     {
