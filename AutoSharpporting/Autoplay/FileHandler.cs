@@ -41,7 +41,11 @@ namespace Support
                     Items[i] = Convert.ToInt32(_itemsStringArray[i]);
                 }
                 MetaHandler.CustomBuild = GetCustomBuild();
-                foreach (var i in MetaHandler.CustomBuild)
+                foreach (var i in GetCustomBuild())
+                {
+                    Game.PrintChat(i.ToString());
+                }
+                foreach (var i in Items)
                 {
                     Game.PrintChat(i.ToString());
                 }
