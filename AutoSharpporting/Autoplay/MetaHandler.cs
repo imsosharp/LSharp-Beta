@@ -62,7 +62,7 @@ namespace Support
                 {
                     return;
                 }
-                if (CustomBuild.Count() >= 1)
+                if (CustomBuild.Count() >= 1 && FileHandler.ExistsCustomBuild())
                 {
                     foreach (var item in CustomBuild)
                     {
