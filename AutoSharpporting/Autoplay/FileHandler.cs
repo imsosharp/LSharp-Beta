@@ -47,6 +47,7 @@ namespace Support
                 {
                     CustomShopList[i] = (ItemId)itemsIntArray[i];
                 }
+                Game.PrintChat("Everything in FileHandler class workerino fine.");
             }
         }
     }

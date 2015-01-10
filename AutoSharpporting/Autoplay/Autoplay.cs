@@ -97,6 +97,7 @@ namespace Support
             DoAutoplay();
             MetaHandler.DoChecks();
             MetaHandler.UpdateObjects();
+            Game.PrintChat("Time: " + Game.ClockTime);
             //FileHandler.DoChecks(); no need for it at onupdate, lulz
         }
 
