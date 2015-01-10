@@ -62,7 +62,7 @@ namespace Support
                 {
                     return;
                 }
-                if (CustomBuild.Count() >= 1 && FileHandler.ExistsCustomBuild())
+                /*if (CustomBuild.Count() >= 1 && FileHandler.ExistsCustomBuild())
                 {
                     foreach (var item in CustomBuild)
                     {
@@ -71,7 +71,7 @@ namespace Support
                             BuyItem(item);
                         }
                     }
-                }
+                }*/
                 else
                 {
                     if (Autoplay.Bot.InFountain() && (Autoplay.Bot.Gold == 475 || Autoplay.Bot.Gold == 515)) //validates on SR untill 1:55 game time
