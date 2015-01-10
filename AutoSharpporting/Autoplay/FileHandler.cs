@@ -13,12 +13,10 @@ namespace Support
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
         private static string _theFile;
-        private static string[] _itemsStringArray = { };
-        public static int[] Items = { };
 
         public static void DoChecks()
         {
-            _theFile = _cBuildsPath + Utility.Map.GetMap().Type + "\\" + Autoplay.Bot.BaseSkinName + ".txt";
+            _theFile = _cBuildsPath + Utility.Map.GetMap().Type + @"\" + Autoplay.Bot.BaseSkinName + ".txt";
             Game.PrintChat(_theFile);
             if (!Directory.Exists(_cBuildsPath))
             {
@@ -34,14 +32,15 @@ namespace Support
                 Game.PrintChat("Found custom build");
                 var contents = File.ReadAllText(_theFile);
                 string[] separator = { "," };
-                _itemsStringArray = contents.Split(separator, StringSplitOptions.None);
+                string[] _itemsStringArray = contents.Split(separator, StringSplitOptions.None);
+                int[] Items = new int[_itemsStringArray.Count()];
                 for(var i = 0; i < _itemsStringArray.Count(); i++)
                 {
                     //Int32.TryParse(_itemsStringArray[i], out Items[i]);
                     Items[i] = Convert.ToInt32(_itemsStringArray[i]);
                 }
-                MetaHandler.CustomBuild = GetCustomBuild();
-                foreach (var i in GetCustomBuild())
+                MetaHandler.CustomBuild = GetCustomBuild(Items);
+                foreach (var i in GetCustomBuild(Items))
                 {
                     Game.PrintChat(i.ToString());
                 }
@@ -61,12 +60,12 @@ namespace Support
             return File.Exists(_theFile);
         }
 
-        public static ItemId[] GetCustomBuild()
+        public static ItemId[] GetCustomBuild(int[] itemsArray)
         {
             ItemId[] localCopy = { };
-                for (var i = 0; i < Items.Count(); i++)
+                for (var i = 0; i < itemsArray.Count(); i++)
                 {
-                    localCopy[i] = (ItemId) Items[i];
+                    localCopy[i] = (ItemId) itemsArray[i];
                 }
                 return localCopy;
         }
