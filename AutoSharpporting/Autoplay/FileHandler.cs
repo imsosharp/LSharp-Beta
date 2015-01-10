@@ -34,7 +34,7 @@ namespace Support
                 Game.PrintChat("Found custom build");
                 var contents = File.ReadAllText(_theFile);
                 string[] separator = { "," };
-                _itemsStringArray = contents.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                _itemsStringArray = contents.Split(separator, StringSplitOptions.None);
                 for(var i = 0; i < _itemsStringArray.Count(); i++)
                 {
                     //Int32.TryParse(_itemsStringArray[i], out Items[i]);
@@ -46,6 +46,10 @@ namespace Support
                     Game.PrintChat(i.ToString());
                 }
                 foreach (var i in Items)
+                {
+                    Game.PrintChat(i.ToString());
+                }
+                foreach (var i in _itemsStringArray)
                 {
                     Game.PrintChat(i.ToString());
                 }
