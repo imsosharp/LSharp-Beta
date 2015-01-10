@@ -29,22 +29,24 @@ namespace Support
             }
             if (ExistsCustomBuild())
             {
-                Game.PrintChat("Found custom build");
+                /*Game.PrintChat("Found custom build");
                 var contents = File.ReadAllText(_theFile);
                 string[] separator = { "," };
                 string[] itemsStringArray = contents.Split(separator, StringSplitOptions.None);
-                int[] items = new int[itemsStringArray.Count()];
+                int[] items = new int[itemsStringArray.Count()];*/
+                string[] itemsStringArray = File.ReadAllLines(_theFile);
+                int[] itemsIntArray = new int[itemsStringArray.Count()];
                 for(var i = 0; i < itemsStringArray.Count(); i++)
                 {
                     //Int32.TryParse(_itemsStringArray[i], out Items[i]);
-                    items[i] = Convert.ToInt32(itemsStringArray[i]);
+                    itemsIntArray[i] = Convert.ToInt32(itemsStringArray[i]);
                 }
-                MetaHandler.CustomBuild = GetCustomBuild(items);
-                foreach (var i in GetCustomBuild(items))
+                MetaHandler.CustomBuild = GetCustomBuild(itemsIntArray);
+                foreach (var i in GetCustomBuild(itemsIntArray))
                 {
                     Game.PrintChat(i.ToString());
                 }
-                foreach (var i in items)
+                foreach (var i in itemsIntArray)
                 {
                     Game.PrintChat(i.ToString());
                 }
