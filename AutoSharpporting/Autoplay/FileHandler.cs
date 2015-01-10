@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Threading;
 using LeagueSharp;
 using LeagueSharp.Common;
 
@@ -14,8 +13,8 @@ namespace Support
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
         private static string _theFile;
-        private static string[] _itemsStringArray = new string[76];
-        public static int[] Items = new int[76];
+        private static string[] _itemsStringArray = { };
+        public static int[] Items = { };
 
         public static void DoChecks()
         {
