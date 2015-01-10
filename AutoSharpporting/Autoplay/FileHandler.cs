@@ -12,13 +12,14 @@ namespace Support
     internal class FileHandler
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
-        private static string theFile = ""; //better to intialize at ongameload
+        private static string _theFile; //better to intialize at ongameload
         private static string[] _itemsStringArray = { };
         public static int[] Items = { };
 
         public static void DoChecks()
         {
-            theFile = _cBuildsPath + Utility.Map.GetMap().Type + Autoplay.Bot.BaseSkinName + ".txt";
+            _theFile = _cBuildsPath + Utility.Map.GetMap().Type + Autoplay.Bot.BaseSkinName + ".txt";
+            Game.PrintChat(_theFile);
             if (!Directory.Exists(_cBuildsPath))
             {
                 Directory.CreateDirectory(_cBuildsPath);
@@ -31,7 +32,7 @@ namespace Support
             if (ExistsCustomBuild())
             {
                 Game.PrintChat("Found custom build");
-                var contents = File.ReadAllText(theFile);
+                var contents = File.ReadAllText(_theFile);
                 string[] separator = { "," };
                 _itemsStringArray = contents.Split(separator, StringSplitOptions.RemoveEmptyEntries);
                 for(var i = 0; i < _itemsStringArray.Count(); i++)
@@ -43,7 +44,7 @@ namespace Support
 
         public static bool ExistsCustomBuild()
         {
-            return File.Exists(theFile);
+            return File.Exists(_theFile);
         }
 
         public static ItemId[] GetCustomBuild()
