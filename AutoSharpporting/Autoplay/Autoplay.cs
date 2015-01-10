@@ -97,7 +97,6 @@ namespace Support
             DoAutoplay();
             MetaHandler.DoChecks();
             MetaHandler.UpdateObjects();
-            //FileHandler.DoChecks(); no need for it at onupdate, lulz
         }
 
         public static void OnGameEnd(EventArgs args)
