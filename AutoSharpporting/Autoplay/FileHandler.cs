@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -27,40 +24,30 @@ namespace Support
                 Directory.CreateDirectory(_cBuildsPath + Utility.Map.MapType.SummonersRift);
                 Directory.CreateDirectory(_cBuildsPath + Utility.Map.MapType.TwistedTreeline);
                 Directory.CreateDirectory(_cBuildsPath + Utility.Map.MapType.Unknown);
+                if (!File.Exists(_theFile) && Utility.Map.GetMap().Type == Utility.Map.MapType.SummonersRift)
+                {
+                    var newfile = File.Create(_theFile);
+                    newfile.Close();
+                    var content = "3157\n3089\n3165\n3174\n3116\n3222\n3092\n3151\n3100\n3190\n3027\n3135\n3146\n3020";
+                    var separator = new string[] { "\n" };
+                    string[] lines = content.Split(separator, StringSplitOptions.None);
+                    File.WriteAllLines(_theFile, lines);
+                }
             }
-            if (ExistsCustomBuild())
+            if (File.Exists(_theFile))
             {
-                /*Game.PrintChat("Found custom build");
-                var contents = File.ReadAllText(_theFile);
-                string[] separator = { "," };
-                string[] itemsStringArray = contents.Split(separator, StringSplitOptions.None);
-                int[] items = new int[itemsStringArray.Count()];*/
                 string[] itemsStringArray = File.ReadAllLines(_theFile);
                 int[] itemsIntArray = new int[itemsStringArray.Count()];
                 CustomShopList = new ItemId[itemsStringArray.Count()];
-                foreach (var i in itemsStringArray)
-                {
-                    Game.PrintChat(i);
-                }
                 for(var i = 0; i < itemsStringArray.Count(); i++)
                 {
-                    //Int32.TryParse(_itemsStringArray[i], out Items[i]);
                     itemsIntArray[i] = Convert.ToInt32(itemsStringArray[i]);
-                }
-                foreach (var i in itemsIntArray)
-                {
-                    Game.PrintChat(i.ToString());
                 }
                 for (var i = 0; i < itemsIntArray.Count(); i++)
                 {
                     CustomShopList[i] = (ItemId)itemsIntArray[i];
                 }
             }
-        }
-
-        public static bool ExistsCustomBuild()
-        {
-            return File.Exists(_theFile);
         }
     }
 }

@@ -344,7 +344,7 @@ namespace Support
         private static void WalkAround(Obj_AI_Hero follow)
         {
             _randRange = Rand.Next(-267, 276);
-            _randSeconds = Rand.Next(1000, 4000);
+            _randSeconds = Rand.Next(500, 3500);
             if (Environment.TickCount - _stepTime >= _randSeconds)
             {
                 if (Bot.Team == GameObjectTeam.Order)

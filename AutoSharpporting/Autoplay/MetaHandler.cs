@@ -35,7 +35,7 @@ namespace Support
             "Ryze", "Shaco", "Singed", "Sona", "Swain", "Syndra", "Teemo", "Thresh", "TwistedFate", "veigar", "VelKoz",
             "Viktor", "Vladimir", "Xerath", "XinZhao", "Yorick", "Ziggs", "Zilean", "Zyra"
         };
-        static readonly ItemId[] SRShopList = { ItemId.Zhonyas_Hourglass, ItemId.Rabadons_Deathcap, ItemId.Morellonomicon, ItemId.Athenes_Unholy_Grail, ItemId.Rylais_Crystal_Scepter, ItemId.Mikaels_Crucible, ItemId.Frost_Queens_Claim, ItemId.Liandrys_Torment, ItemId.Lich_Bane, ItemId.Locket_of_the_Iron_Solari, ItemId.Rod_of_Ages, ItemId.Void_Staff, ItemId.Liandrys_Torment, ItemId.Hextech_Gunblade, ItemId.Sorcerers_Shoes };
+        static readonly ItemId[] SRShopList = { ItemId.Zhonyas_Hourglass, ItemId.Rabadons_Deathcap, ItemId.Morellonomicon, ItemId.Athenes_Unholy_Grail, ItemId.Rylais_Crystal_Scepter, ItemId.Mikaels_Crucible, ItemId.Frost_Queens_Claim, ItemId.Liandrys_Torment, ItemId.Lich_Bane, ItemId.Locket_of_the_Iron_Solari, ItemId.Rod_of_Ages, ItemId.Void_Staff, ItemId.Hextech_Gunblade, ItemId.Sorcerers_Shoes };
         static readonly ItemId[] TTShopList = { ItemId.Wooglets_Witchcap, ItemId.Rod_of_Ages, ItemId.Rylais_Crystal_Scepter, ItemId.Lich_Bane, ItemId.Liandrys_Torment, ItemId.Morellonomicon, ItemId.Locket_of_the_Iron_Solari, ItemId.Void_Staff, ItemId.Sorcerers_Shoes };
         static readonly ItemId[] ARAMShopListAP = { ItemId.Zhonyas_Hourglass, ItemId.Rabadons_Deathcap, ItemId.Rod_of_Ages, ItemId.Rylais_Crystal_Scepter, ItemId.Will_of_the_Ancients, ItemId.Zekes_Herald, ItemId.Locket_of_the_Iron_Solari, ItemId.Void_Staff, ItemId.Hextech_Sweeper, ItemId.Iceborn_Gauntlet, ItemId.Abyssal_Scepter, ItemId.Sorcerers_Shoes };
         static readonly ItemId[] ARAMShopListAD = { ItemId.Blade_of_the_Ruined_King, ItemId.Infinity_Edge, ItemId.Phantom_Dancer, ItemId.Sanguine_Blade, ItemId.Mercurial_Scimitar, ItemId.Zephyr, ItemId.Maw_of_Malmortius, ItemId.Statikk_Shiv, ItemId.Berserkers_Greaves };
@@ -60,19 +60,8 @@ namespace Support
                 {
                     return;
                 }
-                if (FileHandler.ExistsCustomBuild() && (FileHandler.CustomShopList != null))
-                {
-                    foreach (var item in FileHandler.CustomShopList)
-                    {
-                        if (!HasItem(item))
-                        {
-                            BuyItem(item);
-                        }
-                    }
-                }
-                else
-                {
-                    if (Autoplay.Bot.InFountain() && (Autoplay.Bot.Gold == 475 || Autoplay.Bot.Gold == 515)) //validates on SR untill 1:55 game time
+                
+                if (Autoplay.Bot.InFountain() && (Autoplay.Bot.Gold == 475 || Autoplay.Bot.Gold == 515)) //validates on SR untill 1:55 game time
                     {
                         int startingItem = Autoplay.Rand.Next(-6, 7);
                         if (startingItem <= 0)
@@ -85,6 +74,18 @@ namespace Support
                         }
                         Autoplay.Bot.BuyItem(ItemId.Warding_Totem_Trinket);
                     }
+                if (FileHandler.ExistsCustomBuild() && (FileHandler.CustomShopList != null))
+                {
+                    foreach (var item in FileHandler.CustomShopList)
+                    {
+                        if (!HasItem(item))
+                        {
+                            BuyItem(item);
+                        }
+                    }
+                }
+                else
+                {
                     foreach (var item in GetDefaultItemArray())
                     {
                         if (!HasItem(item))
