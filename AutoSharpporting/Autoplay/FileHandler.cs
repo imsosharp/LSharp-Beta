@@ -32,6 +32,7 @@ namespace Support
                     var separator = new string[] { "\n" };
                     string[] lines = content.Split(separator, StringSplitOptions.None);
                     File.WriteAllLines(_theFile, lines);
+                    Game.PrintChat("Created custom shoplist at: " + _theFile);
                 }
             }
             if (File.Exists(_theFile))
