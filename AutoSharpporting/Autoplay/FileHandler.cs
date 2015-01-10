@@ -9,7 +9,7 @@ namespace Support
     internal class FileHandler
     {
         private static string _cBuildsPath = Config.LeagueSharpDirectory + @"\AutoSharpporting\";
-        private static string _theFile;
+        public static string _theFile;
         public static ItemId[] CustomShopList;
 
         public static void DoChecks()

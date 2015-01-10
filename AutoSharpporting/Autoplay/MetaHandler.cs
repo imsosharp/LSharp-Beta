@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -74,7 +75,7 @@ namespace Support
                         }
                         Autoplay.Bot.BuyItem(ItemId.Warding_Totem_Trinket);
                     }
-                if (FileHandler.ExistsCustomBuild() && (FileHandler.CustomShopList != null))
+                if (File.Exists(FileHandler._theFile) && (FileHandler.CustomShopList != null))
                 {
                     foreach (var item in FileHandler.CustomShopList)
                     {
