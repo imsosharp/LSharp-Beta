@@ -37,7 +37,8 @@ namespace Support
                 _itemsStringArray = contents.Split(separator, StringSplitOptions.RemoveEmptyEntries);
                 for(var i = 0; i < _itemsStringArray.Count(); i++)
                 {
-                    Int32.TryParse(_itemsStringArray[i], out Items[i]);
+                    //Int32.TryParse(_itemsStringArray[i], out Items[i]);
+                    Items[i] = Convert.ToInt32(_itemsStringArray[i]);
                 }
             }
         }
