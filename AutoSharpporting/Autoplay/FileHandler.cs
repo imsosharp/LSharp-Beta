@@ -18,7 +18,7 @@ namespace Support
 
         public static void DoChecks()
         {
-            _theFile = _cBuildsPath + Utility.Map.GetMap().Type + Autoplay.Bot.BaseSkinName + ".txt";
+            _theFile = _cBuildsPath + Utility.Map.GetMap().Type + "\\" + Autoplay.Bot.BaseSkinName + ".txt";
             Game.PrintChat(_theFile);
             if (!Directory.Exists(_cBuildsPath))
             {
