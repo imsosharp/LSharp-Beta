@@ -41,7 +41,7 @@ namespace Support
         static readonly ItemId[] ARAMShopListAD = { ItemId.Blade_of_the_Ruined_King, ItemId.Infinity_Edge, ItemId.Phantom_Dancer, ItemId.Sanguine_Blade, ItemId.Mercurial_Scimitar, ItemId.Zephyr, ItemId.Maw_of_Malmortius, ItemId.Statikk_Shiv, ItemId.Berserkers_Greaves };
         static readonly ItemId[] CrystalScar = { ItemId.Rod_of_Ages_Crystal_Scar, ItemId.Wooglets_Witchcap, ItemId.Void_Staff, ItemId.Athenes_Unholy_Grail, ItemId.Abyssal_Scepter, ItemId.Liandrys_Torment, ItemId.Morellonomicon, ItemId.Rylais_Crystal_Scepter, ItemId.Sorcerers_Shoes };
         static readonly ItemId[] Other = { };
-        public static ItemId[] CustomBuild = { };
+        public static ItemId[] CustomBuild = new ItemId[76];
         static int LastShopAttempt;
 
         public static void DoChecks()
@@ -57,13 +57,12 @@ namespace Support
             }
             if (Autoplay.Bot.InFountain())
             {
-
-                if (map.Type == Utility.Map.MapType.HowlingAbyss && !Autoplay.Bot.IsDead)
+                if (FileHandler.ExistsCustomBuild())
                 {
-                    return;
-                }
-                /*if (CustomBuild.Count() >= 1 && FileHandler.ExistsCustomBuild())
-                {
+                    if (map.Type == Utility.Map.MapType.HowlingAbyss && !Autoplay.Bot.IsDead)
+                    {
+                        return;
+                    }
                     foreach (var item in CustomBuild)
                     {
                         if (!HasItem(item))
@@ -71,7 +70,7 @@ namespace Support
                             BuyItem(item);
                         }
                     }
-                }*/
+                }
                 else
                 {
                     if (Autoplay.Bot.InFountain() && (Autoplay.Bot.Gold == 475 || Autoplay.Bot.Gold == 515)) //validates on SR untill 1:55 game time
@@ -125,10 +124,7 @@ namespace Support
             }
             if (map.Type == Utility.Map.MapType.HowlingAbyss)
             {
-                foreach (var apchamp in AP)
-                {
-                    if (Autoplay.Bot.BaseSkinName.ToLower() == apchamp.ToLower()) return ARAMShopListAP;
-                }
+                if (AP.Any(apchamp => Autoplay.Bot.BaseSkinName.ToLower() == apchamp.ToLower())) return ARAMShopListAP;
                 return ARAMShopListAD;
             }
             if (map.Type == Utility.Map.MapType.CrystalScar)
@@ -185,14 +181,7 @@ namespace Support
 
         public static bool IsSupport(Obj_AI_Hero hero)
         {
-            foreach (var support in Supports)
-            {
-                if (hero.BaseSkinName.ToLower() == support.ToLower())
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Supports.Any(support => hero.BaseSkinName.ToLower() == support.ToLower());
         }
 
         public static int NearbyAllyMinions(Obj_AI_Base x, int distance)
