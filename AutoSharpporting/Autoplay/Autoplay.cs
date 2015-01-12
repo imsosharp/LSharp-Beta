@@ -44,12 +44,22 @@ namespace Support
         private static float _lowManaRatio = 0.1f;
         private static float _lowHealthIfLowManaRatio = 0.6f;
         private static int _neededGoldToBack = 2200 + Rand.Next(0, 1100);
+        private static bool _overrideAttackUnitAction = false;
 
         public Autoplay()
         {
             CustomEvents.Game.OnGameLoad += OnGameLoad;
             Game.OnGameUpdate += OnUpdate;
             Game.OnGameEnd += OnGameEnd;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+        }
+
+        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe && sender.UnderTurret(true) && args.Target.IsEnemy)
+            {
+                _overrideAttackUnitAction = true;
+            }
         }
 
         private static void OnGameLoad(EventArgs args)
@@ -139,16 +149,24 @@ namespace Support
                 try
                 {
                     var turret = MetaHandler.EnemyTurrets.FirstOrDefault(t => t.Distance(Bot) < 1200);
+                    if (_overrideAttackUnitAction)
+                    {
+                        Bot.IssueOrder(GameObjectOrder.MoveTo, _safepos.To3D());
+                    }
+                    if (!Bot.UnderTurret(true))
+                    {
+                        _overrideAttackUnitAction = false;
+                    }
                     if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(turret, 750) > 2 && IsBotSafe())
                     {
-                            if (turret.Distance(Bot) < Bot.AttackRange)
+                            if (turret.Distance(Bot) < Bot.AttackRange && !_overrideAttackUnitAction)
                                 Bot.IssueOrder(GameObjectOrder.AttackUnit, turret);
                     }
                     else
                     {
                         Obj_AI_Hero target = TargetSelector.GetTarget(
                             Bot.AttackRange, TargetSelector.DamageType.Physical);
-                        if (target != null && target.IsValid && target.IsDead && IsBotSafe())
+                        if (target != null && target.IsValid && target.IsDead && IsBotSafe() && !_overrideAttackUnitAction)
                         {
                             Bot.IssueOrder(GameObjectOrder.AttackUnit, target);
                         }
