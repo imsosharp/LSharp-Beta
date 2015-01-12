@@ -56,7 +56,7 @@ namespace Support
 
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe && sender.UnderTurret(true) && args.Target.IsEnemy)
+            if (sender.IsMe && sender.UnderTurret(true) && args.Target.IsEnemy && args.Target.Type == GameObjectType.obj_AI_Hero)
             {
                 _overrideAttackUnitAction = true;
             }
@@ -363,7 +363,7 @@ namespace Support
         {
             _randRange = Rand.Next(-267, 276);
             _randSeconds = Rand.Next(1000, 4000);
-            if (Environment.TickCount - _stepTime >= _randSeconds)
+            if (Environment.TickCount - _stepTime >= _randSeconds && !_overrideAttackUnitAction)
             {
                 if (Bot.Team == GameObjectTeam.Order)
                 {
@@ -390,7 +390,7 @@ namespace Support
         {
             _randRange = Rand.Next(-267, 276);
             _randSeconds = Rand.Next(500, 3500);
-            if (Environment.TickCount - _stepTime >= _randSeconds)
+            if (Environment.TickCount - _stepTime >= _randSeconds && !_overrideAttackUnitAction)
             {
                 if (Bot.Team == GameObjectTeam.Order)
                 {
