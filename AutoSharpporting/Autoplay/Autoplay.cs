@@ -9,8 +9,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
+using System.Net.Mime;
 using Support.Util;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -45,6 +47,7 @@ namespace Support
         private static float _lowHealthIfLowManaRatio = 0.6f;
         private static int _neededGoldToBack = 2200 + Rand.Next(0, 1100);
         private static bool _overrideAttackUnitAction = false;
+        private static int _lastSwitched = 0;
 
         public Autoplay()
         {
@@ -117,7 +120,8 @@ namespace Support
 
         public static void OnGameEnd(EventArgs args)
         {
-            //Game.Say("gg"); nope
+            Process[] pN = Process.GetProcessesByName("League of Legends");
+            pN[0].Kill();
         }
 
         private static bool IsBotSafe()
@@ -133,11 +137,9 @@ namespace Support
             }
             if (Bot.Mana < Bot.MaxMana * _lowManaRatio)
             {
-                return Bot.Health > Bot.MaxHealth * _lowHealthIfLowManaRatio && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack);
-                    //&& !(Bot.Gold > (2200 + Rand.Next(100, 1100)));
+                return Bot.Health > Bot.MaxHealth * _lowHealthIfLowManaRatio && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack && !MetaHandler.HasSixItems());
             }
-            return (Bot.Health > Bot.MaxHealth * _lowHealthRatio) && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack);
-                //&& !(Bot.Gold > (2200 + Rand.Next(100, 1100)));
+            return (Bot.Health > Bot.MaxHealth * _lowHealthRatio) && !Bot.IsRecalling() && !(Bot.Gold > _neededGoldToBack && !MetaHandler.HasSixItems());
 
         }
 
@@ -217,9 +219,9 @@ namespace Support
                     }
                     if (_byPassLoadedCheck && Carry == null)
                     {
-                        if (MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !MetaHandler.HasSmite(hero)) != null)
+                        if (MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !hero.InFountain() && !MetaHandler.HasSmite(hero)) != null)
                         {
-                            Carry = MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !MetaHandler.HasSmite(hero));
+                            Carry = MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !hero.InFountain() && !MetaHandler.HasSmite(hero));
                         }
                     }
                     #endregion
@@ -349,6 +351,16 @@ namespace Support
 
                         }
 
+                    }
+                    #endregion
+                    #region Carry Switching
+
+                    if (Bot.Level > 10 && Environment.TickCount - _lastSwitched > 180000)
+                    {
+                        var alliesSortedByKDA =
+                            MetaHandler.AllyHeroes.OrderBy(hero => hero.ChampionsKilled / ((hero.Deaths != 0) ? hero.Deaths : 1)); //AsunaChan2Kawaii
+                        Carry = alliesSortedByKDA.FirstOrDefault();
+                        _lastSwitched = Environment.TickCount;
                     }
                     #endregion
                 }
