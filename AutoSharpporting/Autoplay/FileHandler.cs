@@ -39,7 +39,11 @@ namespace Support
                 {
                     CustomShopList[i] = (ItemId)itemsIntArray[i];
                 }
-                CustomShopList = CustomShopList.OrderBy(item => Autoplay.Rand.Next()).ToArray();
+                if (CustomShopList[0] == (ItemId) 3157 && CustomShopList[1] == (ItemId) 3089 &&
+                    CustomShopList[2] == (ItemId) 3165)
+                {
+                    CustomShopList = CustomShopList.OrderBy(item => Autoplay.Rand.Next()).ToArray();
+                }
             }
             if (!File.Exists(_theFile) && Utility.Map.GetMap().Type == Utility.Map.MapType.SummonersRift)
             {

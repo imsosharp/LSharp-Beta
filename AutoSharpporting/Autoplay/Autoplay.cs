@@ -253,6 +253,24 @@ namespace Support
                                         MetaHandler.AllyHeroes.FirstOrDefault(
                                             hero => !hero.IsMe && !hero.InFountain() && !hero.IsDead);
                                 }
+                                if (MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !hero.IsDead) == null) //everyone is dead
+                                {
+                                    NearestAllyTurret = MetaHandler.AllyTurrets.FirstOrDefault();
+                                    if (NearestAllyTurret != null)
+                                    {
+                                        _saferecall.X = NearestAllyTurret.Position.X + _safe;
+                                        _saferecall.Y = NearestAllyTurret.Position.Y;
+                                        if (Bot.Position.Distance(_saferecall.To3D()) < 200)
+                                        {
+                                            Bot.Spellbook.CastSpell(SpellSlot.Recall);
+                                        }
+                                        else
+                                        {
+
+                                            Bot.IssueOrder(GameObjectOrder.MoveTo, _saferecall.To3D());
+                                        }
+                                    }
+                                }
                             }
                             if (_tempcarry != null)
                             {
@@ -262,7 +280,7 @@ namespace Support
                                 _frontline.Y = _tempcarry.Position.Y + _chosen;
                                 if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                                 {
-                                    if (_tempcarry.Distance(Bot) > 450)
+                                    if (_tempcarry.Distance(Bot) > 550)
                                     {
                                         Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                                         WalkAround(_tempcarry);
@@ -278,7 +296,7 @@ namespace Support
                         Console.WriteLine("All good, following: " + Carry.ChampionName);
                         _frontline.X = Carry.Position.X + _chosen;
                         _frontline.Y = Carry.Position.Y + _chosen;
-                        if (Carry.Distance(Bot) > 450)
+                        if (Carry.Distance(Bot) > 550)
                         {
                             Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                         }
@@ -319,7 +337,7 @@ namespace Support
                             _frontline.Y = _tempcarry.Position.Y + _chosen;
                             if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                             {
-                                if (Bot.Distance(_frontline) > 450)
+                                if (Bot.Distance(_frontline) > 550)
                                 {
                                     Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                                 }
@@ -331,10 +349,7 @@ namespace Support
                     #region Lowhealth mode
                     if (!IsBotSafe() && !Bot.InFountain())
                     {
-                        if (NearestAllyTurret == null)
-                        {
-                            NearestAllyTurret = MetaHandler.AllyTurrets.FirstOrDefault();
-                        }
+                        NearestAllyTurret = MetaHandler.AllyTurrets.FirstOrDefault();
                         if (NearestAllyTurret != null)
                         {
                             _saferecall.X = NearestAllyTurret.Position.X + _safe;
@@ -348,14 +363,13 @@ namespace Support
 
                                 Bot.IssueOrder(GameObjectOrder.MoveTo, _saferecall.To3D());
                             }
-
                         }
 
                     }
                     #endregion
                     #region Carry Switching
 
-                    if (Bot.Level > 10 && Environment.TickCount - _lastSwitched > 180000)
+                    if ((Bot.Level > 8 || Environment.TickCount - _loaded > 900000) && Environment.TickCount - _lastSwitched > 180000)
                     {
                         var alliesSortedByKDA =
                             MetaHandler.AllyHeroes.OrderBy(hero => hero.ChampionsKilled / ((hero.Deaths != 0) ? hero.Deaths : 1)); //AsunaChan2Kawaii
@@ -400,7 +414,7 @@ namespace Support
 
         private static void WalkAround(Obj_AI_Hero follow)
         {
-            _randRange = Rand.Next(-267, 276);
+            _randRange = Rand.Next(-467, 476);
             _randSeconds = Rand.Next(500, 3500);
             if (Environment.TickCount - _stepTime >= _randSeconds && !_overrideAttackUnitAction)
             {
