@@ -442,7 +442,7 @@ namespace Support
                     _orbwalkingpos.X = follow.Position.X + orbwalkingAdditionInteger;
                     _orbwalkingpos.Y = follow.Position.Y + orbwalkingAdditionInteger;
                 }
-                if (_orbwalkingpos != null)
+                if (_orbwalkingpos != null && Bot.Distance(follow) < 550)
                 {
                     Bot.IssueOrder(GameObjectOrder.MoveTo, _orbwalkingpos.To3D());
                     _stepTime = Environment.TickCount;
