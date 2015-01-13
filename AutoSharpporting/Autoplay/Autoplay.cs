@@ -426,7 +426,7 @@ namespace Support
 
         private static void WalkAround(Obj_AI_Hero follow)
         {
-            _randRange = Rand.Next(-467, 476);
+            _randRange = Rand.Next(-367, 376);
             _randSeconds = Rand.Next(500, 3500);
             if (Environment.TickCount - _stepTime >= _randSeconds && !_overrideAttackUnitAction)
             {
