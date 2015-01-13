@@ -49,6 +49,7 @@ namespace Support
         private static bool _overrideAttackUnitAction = false;
         private static int _lastSwitched = 0;
         private static bool _tookRecallDecision = false;
+        private static int _lastTimeTookRecallDecision = 0;
 
         public Autoplay()
         {
@@ -123,7 +124,12 @@ namespace Support
             MetaHandler.DoChecks();
             MetaHandler.UpdateObjects();
             if (Bot.InFountain()) _tookRecallDecision = false;
-            if (Carry != null && Carry.IsDead && RandomDecision()) _tookRecallDecision = true;
+            if (Carry != null && Carry.IsDead && RandomDecision() &&
+                Environment.TickCount - _lastTimeTookRecallDecision > 120000)
+            {
+                _tookRecallDecision = true;
+                _lastTimeTookRecallDecision = Environment.TickCount;
+            }
         }
 
         public static void OnGameEnd(EventArgs args)
