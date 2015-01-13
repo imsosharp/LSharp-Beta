@@ -61,7 +61,7 @@ namespace Support
 
         public static bool RandomDecision()
         {
-            return Rand.Next(0, 20) > 13; //Hi there riot games ^^
+            return Rand.Next(0, 20) > 10; //Hi there riot games ^^
         }
 
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -125,7 +125,7 @@ namespace Support
             MetaHandler.UpdateObjects();
             if (Bot.InFountain()) _tookRecallDecision = false;
             if (Carry != null && Carry.IsDead && RandomDecision() &&
-                Environment.TickCount - _lastTimeTookRecallDecision > 120000)
+                Environment.TickCount - _lastTimeTookRecallDecision > Rand.Next(60000, 300000))
             {
                 _tookRecallDecision = true;
                 _lastTimeTookRecallDecision = Environment.TickCount;
