@@ -39,6 +39,7 @@ namespace Support
                 {
                     CustomShopList[i] = (ItemId)itemsIntArray[i];
                 }
+                CustomShopList = CustomShopList.OrderBy(item => Autoplay.Rand.Next()).ToArray();
             }
             if (!File.Exists(_theFile) && Utility.Map.GetMap().Type == Utility.Map.MapType.SummonersRift)
             {

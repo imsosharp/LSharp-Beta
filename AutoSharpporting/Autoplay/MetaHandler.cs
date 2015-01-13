@@ -113,20 +113,20 @@ namespace Support
             var map = Utility.Map.GetMap();
             if (map.Type == Utility.Map.MapType.SummonersRift)
             {
-                return SRShopList;
+                return SRShopList.OrderBy(item => Autoplay.Rand.Next()).ToArray();
             }
             if (map.Type == Utility.Map.MapType.TwistedTreeline)
             {
-                return TTShopList;
+                return TTShopList.OrderBy(item => Autoplay.Rand.Next()).ToArray();
             }
             if (map.Type == Utility.Map.MapType.HowlingAbyss)
             {
                 if (AP.Any(apchamp => Autoplay.Bot.BaseSkinName.ToLower() == apchamp.ToLower())) return ARAMShopListAP;
-                return ARAMShopListAD;
+                return ARAMShopListAD.OrderBy(item => Autoplay.Rand.Next()).ToArray();
             }
             if (map.Type == Utility.Map.MapType.CrystalScar)
             {
-                return CrystalScar;
+                return CrystalScar.OrderBy(item => Autoplay.Rand.Next()).ToArray();
             }
             return Other;
         }
