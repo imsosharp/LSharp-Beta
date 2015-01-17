@@ -52,6 +52,8 @@ namespace NiceGuySharp
             AllyHeroes = AllHeroes.FindAll(hero => hero.IsAlly).ToList();
             EnemyHeroes = AllHeroes.FindAll(hero => !hero.IsAlly).ToList();
             Game.PrintChat("NICE-GUY SHARP SUCCESFULLY LOADED.");
+            Game.PrintChat("Edit what it's going to say at:");
+            Game.PrintChat(FileHandler.Folder);
             
             string[] onGameStart = File.ReadAllLines(FileHandler.OnGameStartTxt);
             int randMessage = Rand.Next(onGameStart.Count());
@@ -180,12 +182,23 @@ namespace NiceGuySharp
 
         public static void TryToSay(string message)
         {
-            if (Menu.Item("enabled").GetValue<bool>())
+            try
             {
-                if (Environment.TickCount - LastSentMessage > MinTimeBeforeNewMessage)
+                if (Menu.Item("enabled").GetValue<bool>())
                 {
-                    Game.Say(message);
+                    if (Environment.TickCount - LastSentMessage > MinTimeBeforeNewMessage)
+                    {
+                        if (message != null)
+                        {
+                            Game.Say(message);
+                        }
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Game.OnGameUpdate -= Game_OnGameUpdate;
             }
         }
 
