@@ -11,58 +11,48 @@ using SpellData = LeagueSharp.SpellData;
 
 namespace Support.Plugins
 {
-    public class Amumu : PluginBase
+    public class Evelynn : PluginBase
     {
-
-        private bool wUse = false;
-        public Amumu()
+        public Evelynn()
         {
-            Q = new Spell(SpellSlot.Q, 1100);
-            Q.SetSkillshot(Q.Instance.SData.SpellCastTime, Q.Instance.SData.LineWidth, Q.Instance.SData.MissileSpeed, true, SkillshotType.SkillshotLine);
+            Q = new Spell(SpellSlot.Q, 500f);
+            W = new Spell(SpellSlot.W, Q.Range);
+            E = new Spell(SpellSlot.E, 225f + 2 * 65f);
+            R = new Spell(SpellSlot.R, 650f);
 
-
-            W = new Spell(SpellSlot.W, 300);
-            E = new Spell(SpellSlot.E, 350);
-            R = new Spell(SpellSlot.R, 550);
-
+            R.SetSkillshot(0.25f, 350f, float.MaxValue, false, SkillshotType.SkillshotCircle);
         }
 
         public override void OnUpdate(EventArgs args)
         {
+
             if (ComboMode)
             {
 
-                
-
-                var qPred = Q.GetPrediction(Target);
-
                 if (Q.CastCheck(Target, "ComboQ"))
                 {
-                    Q.Cast(qPred.CastPosition, UsePackets);
+                    Q.Cast();
                 }
-
-                if (W.IsReady() && !wUse && Player.CountEnemysInRange(R.Range) >= 1)
+                if (W.IsReady() && ObjectManager.Player.HasBuffOfType(BuffType.Slow))
                 {
                     W.Cast();
-                    wUse = true;
-                }
-                if (wUse && Player.CountEnemysInRange(R.Range) == 0)
-                {
-                    W.Cast();
-                    wUse = false;
                 }
 
                 if (E.CastCheck(Target, "ComboE"))
                 {
-                    E.Cast();
+                    E.CastOnUnit(Target);
                 }
-
-                if (R.CastCheck(Target, "ComboR"))
+                if (R.IsReady())
                 {
-                    R.CastIfWillHit(Target, 2, UsePackets);
+                    R.CastIfWillHit(Target, 3);
                 }
-
+                if (R.IsReady() && R.IsKillable(Target))
+                {
+                    R.Cast(Target, UsePackets);
+                }
             }
+
+
         }
 
 
@@ -73,5 +63,6 @@ namespace Support.Plugins
             config.AddBool("ComboE", "Use E", true);
             config.AddBool("ComboR", "Use R", true);
         }
+
     }
 }

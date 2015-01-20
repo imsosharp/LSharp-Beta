@@ -11,40 +11,49 @@ using SpellData = LeagueSharp.SpellData;
 
 namespace Support.Plugins
 {
-    public class Tristana : PluginBase
+    public class Akali : PluginBase
     {
-        public Tristana()
+        public Akali()
         {
-            Q = new Spell(SpellSlot.Q, 703);
-            W = new Spell(SpellSlot.W, 900);
-            E = new Spell(SpellSlot.E, 703);
-            R = new Spell(SpellSlot.R, 703);
+            Q = new Spell(SpellSlot.Q, 600);
 
-            W.SetSkillshot(500,270,1500,false,SkillshotType.SkillshotCone);
+            W = new Spell(SpellSlot.W, 700);
+
+            E = new Spell(SpellSlot.E, 325);
+
+            R = new Spell(SpellSlot.R, 800);
         }
 
         public override void OnUpdate(EventArgs args)
         {
+            KS();
             if (ComboMode)
             {
-                KS();
-                if (Q.CastCheck(Target, "ComboQ") && Orbwalking.InAutoAttackRange(Target))
+                if (Q.CastCheck(Target, "ComboQ"))
                 {
-                    Q.Cast();
+                    Q.Cast(Target, UsePackets);
+                }
+                if (W.IsReady() && (Player.HealthPercentage() < 20 || (!Q.IsReady() && !E.IsReady() && !R.IsReady())))
+                {
+                    W.Cast(Player.Position, UsePackets);
                 }
                 if (E.CastCheck(Target, "ComboE"))
                 {
                     E.Cast(Target, UsePackets);
                 }
+                if (R.CastCheck(Target, "ComboRKS"))
+                {
+                    R.Cast(Target, UsePackets);
+                }
             }
-        
+
 
         }
 
         public void KS()
         {
 
-            foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => Player.Distance(x) < R.Range && x.IsValidTarget() && x.IsEnemy && !x.IsDead))
+            foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => Player.Distance(x) < 900 && x.IsValidTarget() && x.IsEnemy && !x.IsDead))
             {
                 if (target != null)
                 {
@@ -59,46 +68,17 @@ namespace Support.Plugins
                         }
                     }
 
-                    if (W.CastCheck(Target, "ComboW") && W.IsKillable(target))
-                    {
-                        W.Cast(Target, UsePackets);
-                        return;
-                    }
-
 
                 }
             }
         }
-
-
-
-        public override void OnPossibleToInterrupt(Obj_AI_Base unit, InterruptableSpell spell)
-        {
-            if (spell.DangerLevel < InterruptableDangerLevel.High || unit.IsAlly)
-            {
-                return;
-            }
-
-            if (R.CastCheck(unit, "Interrupt.R"))
-            {
-                R.Cast(unit, UsePackets);
-                return;
-            }
-
-        }
-
 
         public override void ComboMenu(Menu config)
         {
             config.AddBool("ComboQ", "Use Q", true);
             config.AddBool("ComboW", "Use W", true);
             config.AddBool("ComboE", "Use E", true);
-            config.AddBool("ComboRKS", "Use R KS", true);
-        }
-
-        public override void InterruptMenu(Menu config)
-        {
-            config.AddBool("Interrupt.R", "Use R to Interrupt Spells", true);
+            config.AddBool("ComboRKS", "Use R", true);
         }
     }
 }
