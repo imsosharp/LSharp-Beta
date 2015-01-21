@@ -392,9 +392,12 @@ namespace Support
                     if ((Bot.Level > 8 || Environment.TickCount - _loaded > 900000) && Environment.TickCount - _lastSwitched > 180000)
                     {
                         var alliesSortedByKDA =
-                            MetaHandler.AllyHeroes.OrderByDescending(hero => hero.ChampionsKilled / ((hero.Deaths != 0) ? hero.Deaths : 1)); //AsunaChan2Kawaii
-                        Carry = alliesSortedByKDA.FirstOrDefault();
-                        _lastSwitched = Environment.TickCount;
+                            MetaHandler.AllyHeroes.OrderByDescending(hero => (hero.ChampionsKilled / ((hero.Deaths != 0) ? hero.Deaths : 1))); //AsunaChan2Kawaii
+                        if (alliesSortedByKDA.FirstOrDefault() != null)
+                        {
+                            Carry = alliesSortedByKDA.FirstOrDefault();
+                            _lastSwitched = Environment.TickCount;
+                        }
                     }
                     #endregion
                 }
