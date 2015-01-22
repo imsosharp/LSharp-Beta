@@ -185,11 +185,14 @@ namespace Support
                     }
                     else
                     {
-                        Obj_AI_Hero target = TargetSelector.GetTarget(
-                            Bot.AttackRange, TargetSelector.DamageType.Physical);
-                        if (target != null && target.IsValid && !target.IsDead && IsBotSafe() && !target.UnderTurret(true) && !_overrideAttackUnitAction && !_tookRecallDecision)
+                        if (TargetSelector.GetTarget(Bot.AttackRange, TargetSelector.DamageType.Physical) != null)
                         {
-                            Bot.IssueOrder(GameObjectOrder.AttackUnit, target);
+                            Obj_AI_Hero target = TargetSelector.GetTarget(Bot.AttackRange, TargetSelector.DamageType.Physical);
+                            if (target != null && target.IsValid && !target.IsDead && IsBotSafe() &&
+                                !target.UnderTurret(true) && !_overrideAttackUnitAction && !_tookRecallDecision)
+                            {
+                                Bot.IssueOrder(GameObjectOrder.AttackUnit, target);
+                            }
                         }
                     }
                     if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(turret, 750) < 2)
