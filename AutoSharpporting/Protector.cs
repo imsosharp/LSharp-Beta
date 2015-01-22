@@ -142,7 +142,7 @@ namespace Support
 
         private static void CreateMenu()
         {
-            Menu = new Menu("AutoSharpporting: Protector", "Protector", true);
+            Menu = new Menu("AutoSharp: Protector", "Protector", true);
 
             // Marksman Potion Manager
             new PotionManager(Menu);
