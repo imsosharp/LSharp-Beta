@@ -116,10 +116,10 @@ namespace Support
             AutoLevel.Enabled(true);
             FileHandler.DoChecks();
             MetaHandler.LoadObjects();
-            var Extras = new Menu("Extras", "Extras", false);
+            /*var Extras = new Menu("Extras", "Extras", false);
             new PotionManager(Extras);
             PluginBase.Config.AddSubMenu(Extras);
-            PluginBase.Config.AddToMainMenu();
+            PluginBase.Config.AddToMainMenu();*/
         }
 
         private static void OnUpdate(EventArgs args)
