@@ -142,7 +142,10 @@ namespace Support
 
         private static void CreateMenu()
         {
-            Menu = new Menu("Support: Protector", "Protector", true);
+            Menu = new Menu("AutoSharpporting: Protector", "Protector", true);
+
+            // Marksman Potion Manager
+            new PotionManager(Menu);
 
             // detector
             var detector = Menu.AddSubMenu(new Menu("Detector", "Detector"));
@@ -201,11 +204,6 @@ namespace Support
             var misc = Menu.AddSubMenu(new Menu("Misc", "Misc"));
             misc.AddItem(new MenuItem("UsePackets", "Use Packets").SetValue(true));
 
-
-            //var Extras = new Menu("Extras", "Extras", false);
-            new PotionManager(Menu);
-            //Menu.AddSubMenu(Extras);
-        
 
             Menu.AddToMainMenu();
         }

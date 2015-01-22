@@ -113,25 +113,13 @@ namespace Support.Util
         }
         public static Obj_AI_Hero AllyBelowHp(int percentHp, float range)
         {
-            foreach (var ally in ObjectManager.Get<Obj_AI_Hero>())
-            {
-                if (ally.IsMe)
-                {
-                    if (((ObjectManager.Player.Health / ObjectManager.Player.MaxHealth) * 100) < percentHp)
-                    {
-                        return ally;
-                    }
-                }
-                else if (ally.IsAlly)
-                {
-                    if (Vector3.Distance(ObjectManager.Player.Position, ally.Position) < range &&
-                    ((ally.Health / ally.MaxHealth) * 100) < percentHp)
-                    {
-                        return ally;
-                    }
-                }
-            }
-            return null;
+            var allyBelowHp = 
+                ObjectManager.Get<Obj_AI_Hero>()
+                    .First(
+                        h =>
+                            !h.IsMe && ((h.Health / h.MaxHealth) * 100) < percentHp &&
+                            h.Distance(ObjectManager.Player) < range);
+            return allyBelowHp;
         }
     }
 }
