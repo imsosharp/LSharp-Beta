@@ -74,7 +74,7 @@ namespace Support
 
         private static void OnGameLoad(EventArgs args)
         {
-            _loaded = Environment.TickCount;
+            _loaded = (Bot.Level == 1) ? Environment.TickCount:Environment.TickCount - 140000;
             _stepTime = Environment.TickCount;
             var map = Utility.Map.GetMap();
             if (map != null && map.Type == Utility.Map.MapType.SummonersRift)
