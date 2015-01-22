@@ -513,7 +513,12 @@ namespace Support
         ///     override to Implement MiscMenu Config
         /// </remarks>
         /// <param name="config">Menu</param>
-        public virtual void MiscMenu(Menu config) { }
+        public virtual void MiscMenu(Menu config)
+        {
+            //var Extras = new Menu("Extras", "Extras", false);
+            new PotionManager(config); //new PotionManager(Extras);
+            //config.AddSubMenu(Extras);
+        }
 
         /// <summary>
         ///     MiscMenu
