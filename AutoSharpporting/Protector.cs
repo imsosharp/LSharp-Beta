@@ -202,9 +202,9 @@ namespace Support
             misc.AddItem(new MenuItem("UsePackets", "Use Packets").SetValue(true));
 
 
-            var Extras = new Menu("Extras", "Extras", false);
-            new PotionManager(Extras);
-            Menu.AddSubMenu(Extras);
+            //var Extras = new Menu("Extras", "Extras", false);
+            new PotionManager(Menu);
+            //Menu.AddSubMenu(Extras);
         
 
             Menu.AddToMainMenu();
