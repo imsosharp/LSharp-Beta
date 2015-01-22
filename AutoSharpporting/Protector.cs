@@ -201,6 +201,12 @@ namespace Support
             var misc = Menu.AddSubMenu(new Menu("Misc", "Misc"));
             misc.AddItem(new MenuItem("UsePackets", "Use Packets").SetValue(true));
 
+
+            var Extras = new Menu("Extras", "Extras", false);
+            new PotionManager(Extras);
+            Menu.AddSubMenu(Extras);
+        
+
             Menu.AddToMainMenu();
         }
 
