@@ -50,6 +50,7 @@ namespace Support
         private static int _lastSwitched = 0;
         private static bool _tookRecallDecision = false;
         private static int _lastTimeTookRecallDecision = 0;
+        private static int _lastRecallAttempt = 0;
 
         public Autoplay()
         {
@@ -115,6 +116,9 @@ namespace Support
             AutoLevel.Enabled(true);
             FileHandler.DoChecks();
             MetaHandler.LoadObjects();
+            var Extras = new Menu("Extras", "Extras", false);
+            new PotionManager(Extras);
+            PluginBase.Config.AddSubMenu(Extras);
         }
 
         private static void OnUpdate(EventArgs args)
@@ -166,7 +170,7 @@ namespace Support
                 try
                 {
                     var turret = MetaHandler.EnemyTurrets.FirstOrDefault(t => t.Distance(Bot) < 1200);
-                    if (_overrideAttackUnitAction)
+                    if (_overrideAttackUnitAction && !_tookRecallDecision)
                     {
                         Bot.IssueOrder(GameObjectOrder.MoveTo, _safepos.To3D());
                     }
@@ -174,7 +178,7 @@ namespace Support
                     {
                         _overrideAttackUnitAction = false;
                     }
-                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(turret, 750) > 2 && IsBotSafe())
+                    if (Bot.UnderTurret(true) && MetaHandler.NearbyAllyMinions(turret, 750) > 2 && IsBotSafe() && !_tookRecallDecision)
                     {
                             if (turret.Distance(Bot) < Bot.AttackRange && !_overrideAttackUnitAction)
                                 Bot.IssueOrder(GameObjectOrder.AttackUnit, turret);
@@ -183,7 +187,7 @@ namespace Support
                     {
                         Obj_AI_Hero target = TargetSelector.GetTarget(
                             Bot.AttackRange, TargetSelector.DamageType.Physical);
-                        if (target != null && target.IsValid && !target.IsDead && IsBotSafe() && !target.UnderTurret(true) && !_overrideAttackUnitAction)
+                        if (target != null && target.IsValid && !target.IsDead && IsBotSafe() && !target.UnderTurret(true) && !_overrideAttackUnitAction && !_tookRecallDecision)
                         {
                             Bot.IssueOrder(GameObjectOrder.AttackUnit, target);
                         }
@@ -272,7 +276,7 @@ namespace Support
                                         MetaHandler.AllyHeroes.FirstOrDefault(
                                             hero => !hero.IsMe && !hero.InFountain() && !hero.IsDead);
                                 }
-                                if (MetaHandler.AllyHeroes.FirstOrDefault(hero => !hero.IsMe && !hero.IsDead) == null)
+                                if (!MetaHandler.AllyHeroes.Any(hero => !hero.IsMe && !hero.IsDead))
                                     //everyone is dead
                                 {
                                     if (!Bot.InFountain())
@@ -304,7 +308,7 @@ namespace Support
                                 _frontline.Y = _tempcarry.Position.Y + _chosen;
                                 if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                                 {
-                                    if (_tempcarry.Distance(Bot) > 550)
+                                    if (_tempcarry.Distance(Bot) > 550 && !_tookRecallDecision)
                                     {
                                         Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                                         WalkAround(_tempcarry);
@@ -320,7 +324,7 @@ namespace Support
                         Console.WriteLine("All good, following: " + Carry.ChampionName);
                         _frontline.X = Carry.Position.X + _chosen;
                         _frontline.Y = Carry.Position.Y + _chosen;
-                        if (Carry.Distance(Bot) > 550)
+                        if (Carry.Distance(Bot) > 550 && !_tookRecallDecision)
                         {
                             Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                         }
@@ -361,7 +365,7 @@ namespace Support
                             _frontline.Y = _tempcarry.Position.Y + _chosen;
                             if (!(_tempcarry.UnderTurret(true) && MetaHandler.NearbyAllyMinions(_tempcarry, 400) < 2) && IsBotSafe())
                             {
-                                if (Bot.Distance(_frontline) > 550)
+                                if (Bot.Distance(_frontline) > 550 && !_tookRecallDecision)
                                 {
                                     Bot.IssueOrder(GameObjectOrder.MoveTo, _frontline.To3D());
                                 }
@@ -380,7 +384,11 @@ namespace Support
                             _saferecall.Y = NearestAllyTurret.Position.Y;
                             if (Bot.Position.Distance(_saferecall.To3D()) < 200)
                             {
-                                Bot.Spellbook.CastSpell(SpellSlot.Recall);
+                                if (Environment.TickCount - _lastRecallAttempt > Rand.Next(500, 2000))
+                                {
+                                    Bot.Spellbook.CastSpell(SpellSlot.Recall);
+                                    _lastRecallAttempt = Environment.TickCount;
+                                }
                             }
                             else
                             {
@@ -430,7 +438,7 @@ namespace Support
                     _orbwalkingpos.X = pos.X + orbwalkingAdditionInteger;
                     _orbwalkingpos.Y = pos.Y + orbwalkingAdditionInteger;
                 }
-                if (_orbwalkingpos != null)
+                if (_orbwalkingpos != null && !_tookRecallDecision)
                 {
                     Bot.IssueOrder(GameObjectOrder.MoveTo, _orbwalkingpos.To3D());
                     _stepTime = Environment.TickCount;
@@ -457,7 +465,7 @@ namespace Support
                     _orbwalkingpos.X = follow.Position.X + orbwalkingAdditionInteger;
                     _orbwalkingpos.Y = follow.Position.Y + orbwalkingAdditionInteger;
                 }
-                if (_orbwalkingpos != null && Bot.Distance(follow) < 550)
+                if (_orbwalkingpos != null && Bot.Distance(follow) < 550 && !_tookRecallDecision)
                 {
                     Bot.IssueOrder(GameObjectOrder.MoveTo, _orbwalkingpos.To3D());
                     _stepTime = Environment.TickCount;
