@@ -50,7 +50,7 @@ namespace Support.Plugins
             {
                 if (W.CastCheck(Target, "ComboW"))
                 {
-                    W.Cast(Target, UsePackets);
+                    W.Cast(Target);
                 }
                 if (RActive && Player.Distance(Target) < R.Range && R.IsKillable(Target))
                 {

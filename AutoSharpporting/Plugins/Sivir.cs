@@ -55,7 +55,7 @@ namespace Support.Plugins
             {
                 if (Q.CastCheck(Target, "ComboQ"))
                 {
-                    Q.Cast(Target, UsePackets);
+                    Q.Cast(Target);
                 }
                 if(R.IsReady() && Player.CountEnemiesInRange(600) > 2){
                     R.Cast();

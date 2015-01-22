@@ -119,6 +119,7 @@ namespace Support
             var Extras = new Menu("Extras", "Extras", false);
             new PotionManager(Extras);
             PluginBase.Config.AddSubMenu(Extras);
+            PluginBase.Config.AddToMainMenu();
         }
 
         private static void OnUpdate(EventArgs args)

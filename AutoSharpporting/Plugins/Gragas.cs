@@ -136,7 +136,7 @@ namespace Support.Plugins
             {
                 if (FirstQReady() && t.IsValidTarget(Q.Range))
                 {
-                    ThrowBarrel(t, UsePackets);
+                    ThrowBarrel(t);
                 }
                 if (SecondQReady() && CurrentQTarget != null)
                 {

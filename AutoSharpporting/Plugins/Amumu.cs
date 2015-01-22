@@ -38,7 +38,7 @@ namespace Support.Plugins
 
                 if (Q.CastCheck(Target, "ComboQ"))
                 {
-                    Q.Cast(qPred.CastPosition, UsePackets);
+                    Q.Cast(qPred.CastPosition);
                 }
 
                 if (W.IsReady() && !wUse && Player.CountEnemiesInRange(R.Range) >= 1)
@@ -59,7 +59,7 @@ namespace Support.Plugins
 
                 if (R.CastCheck(Target, "ComboR"))
                 {
-                    R.CastIfWillHit(Target, 2, UsePackets);
+                    R.CastIfWillHit(Target, 2);
                 }
 
             }

@@ -274,7 +274,7 @@ namespace Support
                     {
                         if (ps.Targeted)
                         {
-                            ps.Spell.CastOnUnit(target, UsePackets);
+                            ps.Spell.CastOnUnit(target);
                         }
                         else
                         {
