@@ -41,12 +41,12 @@ namespace Support.Plugins
                     Q.Cast(qPred.CastPosition, UsePackets);
                 }
 
-                if (W.IsReady() && !wUse && Player.CountEnemysInRange(R.Range) >= 1)
+                if (W.IsReady() && !wUse && Player.CountEnemiesInRange(R.Range) >= 1)
                 {
                     W.Cast();
                     wUse = true;
                 }
-                if (wUse && Player.CountEnemysInRange(R.Range) == 0)
+                if (wUse && Player.CountEnemiesInRange(R.Range) == 0)
                 {
                     W.Cast();
                     wUse = false;

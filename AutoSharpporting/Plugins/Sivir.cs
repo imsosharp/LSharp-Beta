@@ -57,7 +57,7 @@ namespace Support.Plugins
                 {
                     Q.Cast(Target, UsePackets);
                 }
-                if(R.IsReady() && Player.CountEnemysInRange(600) > 2){
+                if(R.IsReady() && Player.CountEnemiesInRange(600) > 2){
                     R.Cast();
                 }
             }

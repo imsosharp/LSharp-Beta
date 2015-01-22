@@ -239,7 +239,7 @@ namespace Support
                     {
                         if (hero.HasBuffOfType(buff) && Menu.SubMenu("CC").Item(buff.ToString()).GetValue<bool>())
                         {
-                            if (mikael.IsActive(hero) && hero.CountEnemysInRange(800) > 0)
+                            if (mikael.IsActive(hero) && hero.CountEnemiesInRange(800) > 0)
                             {
                                 mikael.Item.Cast(hero);
                                 Console.WriteLine(
