@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -36,6 +37,16 @@ namespace SAC.SACUtils
 {
     internal class SACHelpers
     {
+        internal static void Print(string message, params object[] @params)
+        {
+            Game.PrintChat("<font color='#D859CD'>SAC: </font>" + "<font color='#adec00'>" + message + "</font>");
+        }
+
+        internal static void PrintWarning(string message, params object[] @params)
+        {
+            Game.PrintChat("<font color='#FF0000'>SAC: </font>" + "<font color='#adec00'>" + message + "</font>");
+        }
+
         internal static void SACUpdater()
         {
             Task.Factory.StartNew(
@@ -43,32 +54,34 @@ namespace SAC.SACUtils
                 {
                     try
                     {
-                        using (var c = new WebClient())
+                        var installedVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                        var request = WebRequest.Create("https://raw.githubusercontent.com/imsosharp/LeagueSharp/master/SAC/Properties/AssemblyInfo.cs");
+                        var response = request.GetResponse();
+                        if (response.GetResponseStream() == null) { PrintWarning("Network unreacheable"); }
+
+                        var streamReader = new StreamReader(response.GetResponseStream());
+                        var versionPattern = @"\[assembly\: AssemblyVersion\(""(\d{1,})\.(\d{1,})\.(\d{1,})\.(\d{1,})""\)\]";
+                        Match match;
+                        using (streamReader)
                         {
-                            var rawVersion =
-                                c.DownloadString(
-                                    "https://raw.githubusercontent.com/imsosharp/LeagueSharp/master/SAC/Properties/AssemblyInfo.cs");
-                            var match =
-                                new Regex(
-                                    @"\[assembly\: AssemblyVersion\(""(\d{1,})\.(\d{1,})\.(\d{1,})\.(\d{1,})""\)\]")
-                                    .Match(rawVersion);
+                            match = new Regex(versionPattern).Match(streamReader.ReadToEnd());
+                            Version latestVersion;
                             if (match.Success)
                             {
-                                var gitVersion =
+                                latestVersion =
                                     new Version(
                                         string.Format(
                                             "{0}.{1}.{2}.{3}", match.Groups[1], match.Groups[2], match.Groups[3],
                                             match.Groups[4]));
-                                if (gitVersion != Assembly.GetExecutingAssembly().GetName().Version)
+                                if (installedVersion != latestVersion)
                                 {
-                                    Game.PrintChat(
-                                        "<font color='#15C3AC'>SAC:</font> <font color='#FF0000'>" +
-                                        "A new SAC version has been released. Please update to v.{0}!</font>", gitVersion);
-                                    Game.PrintChat("<font color='#00CFEB'>SAC:</font> <font color='#FF0000'>outdated SAC version loaded!</font>");
+                                    PrintWarning("A new SAC version has been released. Please update to v.{0}!</font>", latestVersion);
+                                    PrintWarning("Outdated SAC version loaded!");
                                 }
                                 else
                                 {
-                                    Game.PrintChat("<font color='#15C3AC'>SAC:</font> You have the latest version, GLHF.");
+
+                                    Print(@"You have the latest version. GLHF ^^");
                                 }
                             }
                         }
