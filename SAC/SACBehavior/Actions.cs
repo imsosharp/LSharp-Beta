@@ -32,9 +32,9 @@ using BehaviorSharp.Components.Actions;
 
 namespace SAC.SACBehavior
 {
-    class Actions
+    internal static class Actions
     {
-        internal static BehaviorAction CastSpell(Obj_AI_Base target, Spell spell)
+        internal static BehaviorAction CastSpell(this Spell spell, Obj_AI_Base target)
         {
             return new BehaviorAction(
                 () =>

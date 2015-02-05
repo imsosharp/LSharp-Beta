@@ -34,20 +34,20 @@ namespace SAC.SACBehavior
 {
     internal static class Conditionals
     {
-        internal static Conditional ShouldUse(Obj_AI_Base target, Spell spell, bool overrideManaSavingMode = false)
+        internal static Conditional ShouldUse(this Spell spell, Obj_AI_Base target, bool overrideManaSavingMode = false)
         {
             return new Conditional(
                 () =>
                 {
                     if (spell.IsReady() && spell.IsInRange(target) && spell.WillHit(target, G.User.Position))
                     {
-                        if (SACMathWiz.UltraManaSavingModeEnabled() && !SACMathWiz.SpellWillKill(target, spell) && !overrideManaSavingMode)
+                        if (SACMathWiz.UltraManaSavingModeEnabled() && !spell.WillKill(target) && !overrideManaSavingMode)
                         {
                             return false;
                         }
                         if (target.UnderTurret(true) && G.User.UnderTurret(true))
                         {
-                            if (SACMathWiz.SpellWillKill(target, spell))
+                            if (spell.WillKill(target))
                             {
                                 return true;
                             }

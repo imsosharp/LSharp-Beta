@@ -32,46 +32,41 @@ namespace SAC.SACUtils
 {
     internal static class SACMathWiz
     {
-        internal static float SpellDmg(Obj_AI_Base target, Spell spell)
+        internal static float GetSpellDmg(this Spell spell, Obj_AI_Base target)
         {
             return spell.GetDamage(target);
         }
 
-        internal static bool SpellWillKill(Obj_AI_Base target, Spell spell)
+        internal static bool WillKill(this Spell spell, Obj_AI_Base target)
         {
-            if (SpellDmg(target, spell) > target.Health)
+            if (spell.GetSpellDmg(target) > target.Health)
             {
                 return true;
             }
             return false;
         }
 
-        internal static float TotalDmg(Obj_AI_Base target)
+        internal static float GetComboDmg(this Obj_AI_Hero hero, Obj_AI_Base target)
         {
             var result = new float();
-            if (G.QSpellSlot.IsReady())
+            foreach (var spell in hero.Spellbook.Spells)
             {
-                result += G.QDmg(target);
-            }
-            if (G.WSpellSlot.IsReady())
-            {
-                result += G.WDmg(target);
-            }
-            if (G.ESpellSlot.IsReady())
-            {
-                result += G.EDmg(target);
+                if (spell.IsReady())
+                {
+                    result += (float)hero.GetSpellDamage(target, spell.Name);
+                }
             }
             return result;
         }
 
-        internal static SpellData GetSpellData(Obj_AI_Hero hero, SpellSlot spellslot)
+        internal static SpellData GetSpellData(this Obj_AI_Hero hero, SpellSlot spellslot)
         {
             return SpellData.GetSpellData(hero.GetSpell(spellslot).Name);
         }
 
         internal static bool UltraManaSavingModeEnabled()
         {
-            if (ObjectManager.Player.Mana < G.ComboMana)
+            if (G.User.Mana < G.ComboMana)
             {
                 return true;
             }

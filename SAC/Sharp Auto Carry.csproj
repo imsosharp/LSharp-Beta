@@ -60,13 +60,12 @@
     <Compile Include="SACLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SACOrbwalker.cs" />
+    <Compile Include="SACPlugins\Annie.cs" />
     <Compile Include="SACUtils\SACHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SACUtils\SACMathWiz.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SACPlugins\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

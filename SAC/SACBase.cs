@@ -46,9 +46,23 @@ namespace SAC
         internal virtual void OnDraw(EventArgs args) { }
         internal virtual void OnPossibleToInterrupt(Obj_AI_Hero hero, Interrupter2.InterruptableTargetEventArgs args) { }
 
-        public static Menu Menu { get; set; }
-        public Menu ComboMenu { get; set; }
-        public Menu LaningMenu { get; set; }
+        public static Menu Menu = G.Menu;
+
+        public static Menu ComboMenu = G.ComboMenu;
+        public static Menu LaningMenu = G.LaningMenu;
+
+        public Spell Q = G.Q;
+        public Spell W = G.W;
+        public Spell E = G.E;
+        public Spell R = G.R;
+
+        public static Obj_AI_Base Target(float range, TargetSelector.DamageType damageType)
+        {
+            return TargetSelector.GetTarget(range, damageType);
+        }
+
+        public static TargetSelector Ts;
+
         public Orbwalking.Orbwalker Orbwalker { get; set; }
 
         public string MenuName = "sac.menu." + G.ChampionName;

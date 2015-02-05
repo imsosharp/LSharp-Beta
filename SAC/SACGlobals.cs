@@ -33,6 +33,9 @@ namespace SAC
     internal static class G
     {
         internal static Obj_AI_Hero User { get { return ObjectManager.Player; } }
+        public static Menu Menu { get; set; }
+        public static Menu ComboMenu { get; set; }
+        public static Menu LaningMenu { get; set; }
         internal static string ChampionName { get { return User.BaseSkinName; } }
         internal static Spellbook SpellBook { get { return User.Spellbook; } }
         internal static string AllyTeam { get { return User.Team.ToString(); } }
@@ -41,19 +44,19 @@ namespace SAC
         internal static SpellSlot WSpellSlot { get { return SpellSlot.Q; } }
         internal static SpellSlot ESpellSlot { get { return SpellSlot.Q; } }
         internal static SpellSlot RSpellSlot { get { return SpellSlot.Q; } }
-        internal static Spell QSpell { get { return new Spell(QSpellSlot); }}
-        internal static Spell WSpell { get { return new Spell(WSpellSlot); } }
-        internal static Spell ESpell { get { return new Spell(ESpellSlot); } }
-        internal static Spell RSpell { get { return new Spell(RSpellSlot); } }
-        internal static float QMana { get { return QSpell.Instance.ManaCost; } }
-        internal static float WMana { get { return WSpell.Instance.ManaCost; } }
-        internal static float EMana { get { return ESpell.Instance.ManaCost; } }
-        internal static float RMana { get { return RSpell.Instance.ManaCost; } }
+        internal static Spell Q { get; set; }
+        internal static Spell W { get; set; }
+        internal static Spell E { get; set; }
+        internal static Spell R { get; set; }
+        internal static float QMana { get { return Q.Instance.ManaCost; } }
+        internal static float WMana { get { return W.Instance.ManaCost; } }
+        internal static float EMana { get { return E.Instance.ManaCost; } }
+        internal static float RMana { get { return R.Instance.ManaCost; } }
         internal static float ComboMana { get { return QMana + WMana + EMana; } }
-        internal static float QDmg(Obj_AI_Base target) { return QSpell.GetDamage(target); }
-        internal static float WDmg(Obj_AI_Base target) { return WSpell.GetDamage(target); }
-        internal static float EDmg(Obj_AI_Base target) { return ESpell.GetDamage(target); }
-        internal static float RDmg(Obj_AI_Base target) { return RSpell.GetDamage(target); }
-        internal static float TotalDmg(Obj_AI_Base target) { return SACMathWiz.TotalDmg(target); }
+        internal static float QDmg(Obj_AI_Base target) { return Q.GetDamage(target); }
+        internal static float WDmg(Obj_AI_Base target) { return W.GetDamage(target); }
+        internal static float EDmg(Obj_AI_Base target) { return E.GetDamage(target); }
+        internal static float RDmg(Obj_AI_Base target) { return R.GetDamage(target); }
+        internal static float TotalDmg(Obj_AI_Base target) { return User.GetComboDmg(target); }
     }
 }
