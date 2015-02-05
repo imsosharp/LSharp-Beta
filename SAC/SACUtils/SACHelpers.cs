@@ -57,7 +57,7 @@ namespace SAC.SACUtils
                         var installedVersion = Assembly.GetExecutingAssembly().GetName().Version;
                         var request = WebRequest.Create("https://raw.githubusercontent.com/imsosharp/LeagueSharp/master/SAC/Properties/AssemblyInfo.cs");
                         var response = request.GetResponse();
-                        if (response.GetResponseStream() == null) { PrintWarning("Network unreacheable"); }
+                        if (response.GetResponseStream() == null) { PrintWarning("Network unreacheable"); return; }
 
                         var streamReader = new StreamReader(response.GetResponseStream());
                         var versionPattern = @"\[assembly\: AssemblyVersion\(""(\d{1,})\.(\d{1,})\.(\d{1,})\.(\d{1,})""\)\]";
