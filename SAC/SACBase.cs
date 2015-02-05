@@ -46,6 +46,8 @@ namespace SAC
         internal virtual void OnDraw(EventArgs args) { }
         internal virtual void OnPossibleToInterrupt(Obj_AI_Hero hero, Interrupter2.InterruptableTargetEventArgs args) { }
 
+        public static Obj_AI_Hero MyHero = G.User;
+
         public static Menu Menu = G.Menu;
 
         public static Menu ComboMenu = G.ComboMenu;
@@ -56,7 +58,9 @@ namespace SAC
         public Spell E = G.E;
         public Spell R = G.R;
 
-        public static Obj_AI_Base Target(float range, TargetSelector.DamageType damageType)
+        public List<Spell> SpellList = G.SpellList; 
+
+        public static Obj_AI_Base GetTarget(float range, TargetSelector.DamageType damageType)
         {
             return TargetSelector.GetTarget(range, damageType);
         }

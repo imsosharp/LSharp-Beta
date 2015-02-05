@@ -48,6 +48,7 @@ namespace SAC
         internal static Spell W { get; set; }
         internal static Spell E { get; set; }
         internal static Spell R { get; set; }
+        internal static List<Spell> SpellList { get; set; }
         internal static float QMana { get { return Q.Instance.ManaCost; } }
         internal static float WMana { get { return W.Instance.ManaCost; } }
         internal static float EMana { get { return E.Instance.ManaCost; } }

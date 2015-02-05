@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,13 +43,15 @@ namespace SAC.SACPlugins
             Q.SetTargetted(250, 1400);
             W.SetSkillshot(600, (float)(50 * Math.PI / 180), float.MaxValue, false, SkillshotType.SkillshotCone);
             R.SetSkillshot(250, 200, float.MaxValue, false, SkillshotType.SkillshotCircle);
+
+            SpellList.Add(Q); SpellList.Add(W); SpellList.Add(R);
         }
 
         internal override void OnUpdate(EventArgs args)
         {
-            var QTarget = Target(Q.Range, TargetSelector.DamageType.Magical);
-            var WTarget = Target(W.Range, TargetSelector.DamageType.Magical);
-            var RTarget = Target(R.Range, TargetSelector.DamageType.Magical);
+            var QTarget = GetTarget(Q.Range, TargetSelector.DamageType.Magical);
+            var WTarget = GetTarget(W.Range, TargetSelector.DamageType.Magical);
+            var RTarget = GetTarget(R.Range, TargetSelector.DamageType.Magical);
 
             if (Q.ShouldUse(QTarget).Tick() == BehaviorState.Success)
             {
@@ -63,6 +66,27 @@ namespace SAC.SACPlugins
                 R.CastSpell(RTarget).Tick();
             }
 
+            if (MyHero.InFountain())
+            {
+                W.Cast();
+                E.Cast();
+            }
+
+            if (HeroManager.Enemies.Count(enemy => enemy.Distance(MyHero) < 6000) >= 1 || GetPassiveStacks() <= 3)
+            {
+                E.Cast();
+            }
+        }
+
+        private int GetPassiveStacks()
+        {
+            var buffs = ObjectManager.Player.Buffs.Where(b => (b.Name.ToLower() == "pyromania" || b.Name.ToLower() == "pyromania_particle"));
+            var buffInstances = buffs as BuffInstance[] ?? buffs.ToArray();
+            if (!buffInstances.Any())
+                return 0;
+            var buff = buffInstances.First();
+            var count = buff.Count >= 4 ? 4 : buff.Count;
+            return buff.Name.ToLower() == "pyromania_particle" ? 4 : count;
         }
     }
 }
